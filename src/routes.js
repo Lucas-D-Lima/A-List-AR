@@ -2,6 +2,7 @@ const express = require("express")
 
 const UserController = require('./controller/UserController')
 const AnimeController = require('./controller/AnimeController')
+const AuthController = require('./controller/AuthController')
 
 const routes = express.Router()
 
@@ -10,6 +11,8 @@ routes.post('/user', UserController.store)
 routes.get('/user', UserController.index)
 routes.post('/user/anime', AnimeController.storeAnimes)
 routes.get('/users/:user_id', UserController.profile)
+
+routes.post('/auth', AuthController.login)
 
 //Anime Routes
 routes.post('/animes', AnimeController.store)
