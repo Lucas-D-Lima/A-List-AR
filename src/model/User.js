@@ -11,6 +11,14 @@ class User extends Model{
             sequelize
         })
     }
+    static associate(models){
+        this.belongsToMany(models.Anime, {
+            through: 'user_animes',
+            as: 'animes',
+            foreignKey: 'user_id',
+            otherKey: 'anime_id'
+        })
+    }
 }
 
 module.exports = User;
