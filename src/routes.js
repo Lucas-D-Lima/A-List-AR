@@ -15,6 +15,8 @@ routes.post('/user/anime',authMiddleware, AnimeController.storeAnimes)
 routes.get('/users/:user_id', UserController.profile)
 
 routes.post('/auth', AuthController.login)
+routes.post('/auth/recover', AuthController.recoverPassword)
+routes.put('/auth/change-password-token', AuthController.changePasswordByToken)
 
 //Anime Routes
 routes.post('/animes', AnimeController.store)

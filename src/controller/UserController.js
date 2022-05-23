@@ -8,7 +8,7 @@ module.exports = {
     async index(req, res){
         //const {pk} = req.params.id
         const user = await User.findAll({
-            attributes: {exclude: ['password', 'email', 'updatedAt']}
+            //attributes: {exclude: ['password', 'email', 'updatedAt']}
         })
 
 
@@ -49,12 +49,5 @@ module.exports = {
         })
 
         res.json(user)
-    },
-    async recoverPassword(req, res){
-        const {email} = req.body
-
-        const user = await User.findOne({
-            where: email}
-        )
     }
 }
