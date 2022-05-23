@@ -10,13 +10,18 @@ module.exports = {
     },
     
     async store(req, res){
+        try{
         let {name, gender, year} = req.body;
 
         const anime = await Anime.create( {name, gender, year} )
 
-        res.json(anime)
+        res.json(anime)}
+        catch(error){
+            res.status(500).send(error)
+        }
     },
     async storeAnimes(req, res){
+        try{
         const {user_id, anime_id} = req.body;
 
         const user = await User.findByPk(user_id,  {attributes: {exclude: ['name', 'password', 'email', 'createdAt', 'updatedAt']}});
@@ -29,9 +34,10 @@ module.exports = {
             where: anime_id,
             attributes: {exclude: [ 'createdAt', 'updatedAt', 'name', 'gender', 'year']}
         })
-
         await user.addAnime(animes)
-
-        res.status(200).json({message: "Ok"})
+        res.status(200).json({message: "Ok"})}
+        catch(error){
+            res.status(500).send(error)
+        }
     }
 }

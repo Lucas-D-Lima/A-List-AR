@@ -6,6 +6,7 @@ const User = require('../model/User')
 
 module.exports = {
     async login(req, res){
+        try{
         const {email, password} = req.body;
 
         const user = await User.findOne({
@@ -26,6 +27,9 @@ module.exports = {
         res.json({
             user_id: user.id,
             token: token
-        })
+        })}
+        catch(error){
+            res.status(500).send(error)
+        }
     }
 }

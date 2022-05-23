@@ -15,6 +15,7 @@ module.exports = {
         res.json(user)
     },
     async store(req, res){
+        try{
         let {name, email, birthday, password} = req.body;
 
         password =  await bcrypt.hash(password, 10)
@@ -28,7 +29,10 @@ module.exports = {
         res.json({
             user_id: user.id,
             token: token
-        })
+        })}
+        catch(err){
+            res.status(500).send({err})
+        }
     },
     async profile(req, res){
         const {user_id} = req.params
@@ -45,5 +49,12 @@ module.exports = {
         })
 
         res.json(user)
+    },
+    async recoverPassword(req, res){
+        const {email} = req.body
+
+        const user = await User.findOne({
+            where: email}
+        )
     }
 }
