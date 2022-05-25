@@ -11,7 +11,7 @@ module.exports = {
     async index(req, res){
         //const {pk} = req.params.id
         const user = await User.findAll({
-            //attributes: {exclude: ['password', 'email', 'updatedAt']}
+            attributes: {exclude: ['password', 'email', 'updatedAt']}
         })
 
 
