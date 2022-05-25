@@ -10,7 +10,7 @@ module.exports = {
 
         if(!redisAnime){
             const animes = await animeSQL()
-            await setRedis('animes', JSON.stringify(animes))
+            await setRedis('animes', JSON.stringify(animes), 60)
 
             return res.json(animes)
         }

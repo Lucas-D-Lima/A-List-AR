@@ -14,9 +14,9 @@ function getRedis(value) {
   // redisClient.get("")
 }
 
-function setRedis(key, value) {
+function setRedis(key, value, time) {
   const syncRedisSet = promisify(redisClient.set).bind(redisClient);
-  return syncRedisSet(key, value);
+  return syncRedisSet(key, value, "EX", time*60);
 
   // redisClient.set("", "")
 }

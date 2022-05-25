@@ -45,7 +45,7 @@ module.exports = {
 
         if(!userRedis){
             const user = await userSQL(user_id)
-            await setRedis(`user-${user_id}-profile`, JSON.stringify(user));
+            await setRedis(`user-${user_id}-profile`, JSON.stringify(user), 10);
 
             return res.json(user)
         }
