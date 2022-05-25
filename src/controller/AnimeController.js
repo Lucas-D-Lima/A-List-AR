@@ -1,12 +1,21 @@
 const Anime = require('../model/Anime')
 const User = require('../model/User')
 
+const {getRedis, setRedis} = require('../database/redisConfig')
+const animeSQL = require("./functions/indexAnimes")
+
 module.exports = {
     async index(req, res){
-        const anime = await Anime.findAll({
-            attributes: {exclude: [ 'createdAt', 'updatedAt']}
-        })
-        res.json(anime)
+        const redisAnime = await getRedis('animes')
+
+        if(!redisAnime){
+            const animes = await animeSQL()
+            await setRedis('animes', JSON.stringify(animes))
+
+            return res.json(animes)
+        }
+        const animes = JSON.parse(redisAnime)
+        return res.json(animes)
     },
     
     async store(req, res){

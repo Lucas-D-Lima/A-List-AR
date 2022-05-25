@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+const {getRedis, setRedis} = require('../database/redisConfig')
+const userSQL = require('./functions/getUserProfile')
+
 const authConfig = require('../config/auth')
 const User = require('../model/User')
 
@@ -35,19 +38,23 @@ module.exports = {
         }
     },
     async profile(req, res){
+        try{
         const {user_id} = req.params
 
-        const user = await User.findByPk(user_id, {
-            attributes: {
-                exclude: ['password', 'email', 'updatedAt'],
-            }, include: {
-                association : 'animes', 
-                attributes: ['name', 'id'],
-                through: { 
-                    attributes: []
-                  }}
-        })
+        const userRedis = await getRedis(`user-${user_id}-profile`);
 
-        res.json(user)
+        if(!userRedis){
+            const user = await userSQL(user_id)
+            await setRedis(`user-${user_id}-profile`, JSON.stringify(user));
+
+            return res.json(user)
+        }
+        const user = JSON.parse(userRedis);
+        return res.json(user)
+
+    }catch(err){
+        return res.status(500).send(err)
+        
+    }
     }
 }
