@@ -1,4 +1,5 @@
 const express = require("express")
+require('dotenv').config()
 
 const routes = require('./routes')
 
@@ -13,5 +14,5 @@ app.use(express.json())
 app.use(routes)
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Example app listening on port ${process.env.PORT}`)
 })
